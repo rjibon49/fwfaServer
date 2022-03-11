@@ -35,6 +35,7 @@ async function run() {
 
     const storeProgramCollection = database.collection("programs");
     const storeArticleCollection = database.collection("articles");
+    const storeEventCollection = database.collection("events");
 
 
 
