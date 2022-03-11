@@ -25,9 +25,73 @@ async function run() {
       await client.connect();
   
       const database = client.db("fwfadb");
-      const storeProgramCollection = database.collection("programs");
-    
-       
+
+
+
+    // ========================================================================
+    // =======================  Data Collection Name ==========================
+    // ========================================================================
+
+
+    const storeProgramCollection = database.collection("programs");
+    const storeArticleCollection = database.collection("articles");
+
+
+
+
+    // ========================================================================
+    // =======================   Article DataStore  Start =====================
+    // ========================================================================
+    // PROGRAM GET API 
+
+    app.get('/article', async(req, res) => {
+      const cursor = storeArticleCollection.find({});
+      const article = await cursor.toArray();
+      res.send(article);
+  })
+
+  // PROGRAM POST API 
+      app.post('/article', async(req, res) => {
+          const newArticle = req.body;
+          const result = await storeArticleCollection.insertOne(newArticle);
+          console.log(result);
+          res.json(result);
+      })
+
+  // PROGRAM UPDATE API 
+     app.put('/article', async (req, res) => {
+       const id = req.params.id;
+       const updateArticle = req.body;
+       const filter = {_id: ObjectId(id)};
+       const options = { upsert: true};
+       const updateDoc = {
+         $set : {
+           programName: updateArticle.programName,
+           image: updateArticle.image,
+           programDecription: updateArticle.programDescription
+         },
+       };
+       const result = await storeArticleCollection.updateOne(filter,updateDoc, options)
+       res.json(result)
+     }) 
+
+  // PROGRAM DELETE API 
+  app.delete("/article/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await storeArticleCollection.deleteOne(query);
+      res.json(result);
+    });
+  
+  // ========================================================================
+  // =======================   Program DataStore  End =======================
+  // ========================================================================
+
+
+
+    // ========================================================================
+    // =======================   Program DataStore  Start =====================
+    // ========================================================================
     // PROGRAM GET API 
 
     app.get('/program', async(req, res) => {
@@ -44,6 +108,23 @@ async function run() {
             res.json(result);
         })
 
+    // PROGRAM UPDATE API 
+       app.put('/program', async (req, res) => {
+         const id = req.params.id;
+         const updateProgram = req.body;
+         const filter = {_id: ObjectId(id)};
+         const options = { upsert: true};
+         const updateDoc = {
+           $set : {
+             programName: updateProgram.programName,
+             image: updateProgram.image,
+             programDecription: updateProgram.programDescription
+           },
+         };
+         const result = await storeProgramCollection.updateOne(filter,updateDoc, options)
+         res.json(result)
+       }) 
+
     // PROGRAM DELETE API 
     app.delete("/program/:id", async (req, res) => {
         const id = req.params.id;
@@ -51,6 +132,16 @@ async function run() {
         const result = await storeProgramCollection.deleteOne(query);
         res.json(result);
       });
+    
+    // ========================================================================
+    // =======================   Program DataStore  End =======================
+    // ========================================================================
+
+
+
+
+
+
      
     } finally {
       //await client.close();
