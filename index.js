@@ -113,7 +113,7 @@ async function run() {
        app.put('/program', async (req, res) => {
          const id = req.params.id;
          const updateProgram = req.body;
-         const filter = {_id: ObjectId(id)};
+         const query = {_id: ObjectId(id)};
          const options = { upsert: true};
          const updateDoc = {
            $set : {
@@ -122,7 +122,7 @@ async function run() {
              programDecription: updateProgram.programDescription
            },
          };
-         const result = await storeProgramCollection.updateOne(filter,updateDoc, options)
+         const result = await storeProgramCollection.updateOne(query, updateDoc, options)
          res.json(result)
        }) 
 
