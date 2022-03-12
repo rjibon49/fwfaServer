@@ -33,6 +33,7 @@ async function run() {
     // ========================================================================
 
 
+
     const storeProgramCollection = database.collection("programs");
     const storeArticleCollection = database.collection("articles");
     const storeEventCollection = database.collection("events");
@@ -93,7 +94,7 @@ async function run() {
 
 
     // ========================================================================
-    // =======================   Article DataStore  Start =====================
+    // =======================   Event DataStore  Start =====================
     // ========================================================================
 
 
@@ -139,59 +140,59 @@ async function run() {
     });
   
   // ========================================================================
-  // =======================   Article DataStore  End =======================
+  // =======================   Event DataStore  End =======================
   // ========================================================================
 
 
     // ========================================================================
-    // =======================   Event DataStore  Start =====================
+    // =======================   Career DataStore  Start =====================
     // ========================================================================
 
 
-    // EVENT GET API 
+    // CAREER GET API 
 
-    app.get('/event', async(req, res) => {
-      const cursor = storeEventCollection.find({});
-      const event = await cursor.toArray();
-      res.send(event);
+    app.get('/career', async(req, res) => {
+      const cursor = storeCareerCollection.find({});
+      const career = await cursor.toArray();
+      res.send(career);
   })
 
-  // EVENT POST API 
-      app.post('/event', async(req, res) => {
-          const newEvent = req.body;
-          const result = await storeEventCollection.insertOne(newEvent);
+  // CAREER POST API 
+      app.post('/career', async(req, res) => {
+          const newCareer = req.body;
+          const result = await storeCareerCollection.insertOne(newCareer);
           console.log(result);
           res.json(result);
       })
 
-  // EVENT UPDATE API 
-     app.put('/event', async (req, res) => {
+  // CAREER UPDATE API 
+     app.put('/career', async (req, res) => {
        const id = req.params.id;
-       const updateEvent = req.body;
+       const updateCareer = req.body;
        const filter = {_id: ObjectId(id)};
        const options = { upsert: true};
        const updateDoc = {
          $set : {
-           EventName: updateEvent.EventName,
-           date: updateEvent.date,
-           image: updateEvent.image,
-           undefined: updateEvent.undefined
+           EventName: updateCareer.EventName,
+           date: updateCareer.date,
+           image: updateCareer.image,
+           undefined: updateCareer.undefined
          },
        };
-       const result = await storeEventCollection.updateOne(filter,updateDoc, options)
+       const result = await storeCareerCollection.updateOne(filter,updateDoc, options)
        res.json(result)
      }) 
 
-  // EVENT DELETE API 
-  app.delete("/event/:id", async (req, res) => {
+  // CAREER DELETE API 
+  app.delete("/career/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await storeEventCollection.deleteOne(query);
+      const result = await storeCareerCollection.deleteOne(query);
       res.json(result);
     });
   
   // ========================================================================
-  // =======================   Event DataStore  End =======================
+  // =======================   Career DataStore  End =======================
   // ========================================================================
 
 
@@ -199,6 +200,8 @@ async function run() {
     // ========================================================================
     // =======================   Program DataStore  Start =====================
     // ========================================================================
+
+    
     // PROGRAM GET API 
 
     app.get('/program', async(req, res) => {
