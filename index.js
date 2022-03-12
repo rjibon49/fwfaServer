@@ -43,7 +43,9 @@ async function run() {
     // ========================================================================
     // =======================   Article DataStore  Start =====================
     // ========================================================================
-    // PROGRAM GET API 
+
+
+    // ARTICLE GET API 
 
     app.get('/article', async(req, res) => {
       const cursor = storeArticleCollection.find({});
@@ -51,7 +53,7 @@ async function run() {
       res.send(article);
   })
 
-  // PROGRAM POST API 
+  // ARTICLE POST API 
       app.post('/article', async(req, res) => {
           const newArticle = req.body;
           const result = await storeArticleCollection.insertOne(newArticle);
@@ -59,7 +61,7 @@ async function run() {
           res.json(result);
       })
 
-  // PROGRAM UPDATE API 
+  // ARTICLE UPDATE API 
      app.put('/article', async (req, res) => {
        const id = req.params.id;
        const updateArticle = req.body;
@@ -76,7 +78,7 @@ async function run() {
        res.json(result)
      }) 
 
-  // PROGRAM DELETE API 
+  // ARTICLE DELETE API 
   app.delete("/article/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -85,7 +87,59 @@ async function run() {
     });
   
   // ========================================================================
-  // =======================   Program DataStore  End =======================
+  // =======================   Article DataStore  End =======================
+  // ========================================================================
+
+
+    // ========================================================================
+    // =======================   Event DataStore  Start =====================
+    // ========================================================================
+
+
+    // EVENT GET API 
+
+    app.get('/event', async(req, res) => {
+      const cursor = storeEventCollection.find({});
+      const event = await cursor.toArray();
+      res.send(event);
+  })
+
+  // EVENT POST API 
+      app.post('/event', async(req, res) => {
+          const newEvent = req.body;
+          const result = await storeEventCollection.insertOne(newEvent);
+          console.log(result);
+          res.json(result);
+      })
+
+  // EVENT UPDATE API 
+     app.put('/event', async (req, res) => {
+       const id = req.params.id;
+       const updateEvent = req.body;
+       const filter = {_id: ObjectId(id)};
+       const options = { upsert: true};
+       const updateDoc = {
+         $set : {
+           EventName: updateEvent.EventName,
+           date: updateEvent.date,
+           image: updateArticle.image,
+           undefined: updateEvent.undefined
+         },
+       };
+       const result = await storeEventCollection.updateOne(filter,updateDoc, options)
+       res.json(result)
+     }) 
+
+  // EVENT DELETE API 
+  app.delete("/event/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await storeEventCollection.deleteOne(query);
+      res.json(result);
+    });
+  
+  // ========================================================================
+  // =======================   Event DataStore  End =======================
   // ========================================================================
 
 
