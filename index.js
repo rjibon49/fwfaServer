@@ -36,6 +36,7 @@ async function run() {
     const storeProgramCollection = database.collection("programs");
     const storeArticleCollection = database.collection("articles");
     const storeEventCollection = database.collection("events");
+    const storeCareerCollection = database.collection("career");
 
 
 
@@ -92,6 +93,57 @@ async function run() {
 
 
     // ========================================================================
+    // =======================   Article DataStore  Start =====================
+    // ========================================================================
+
+
+    // EVENT GET API 
+
+    app.get('/event', async(req, res) => {
+      const cursor = storeArticleCollection.find({});
+      const event = await cursor.toArray();
+      res.send(event);
+  })
+
+  // EVENT POST API 
+      app.post('/event', async(req, res) => {
+          const newEvent = req.body;
+          const result = await storeArticleCollection.insertOne(newEvent);
+          console.log(result);
+          res.json(result);
+      })
+
+  // EVENT UPDATE API 
+     app.put('/event', async (req, res) => {
+       const id = req.params.id;
+       const updateEvent = req.body;
+       const filter = {_id: ObjectId(id)};
+       const options = { upsert: true};
+       const updateDoc = {
+         $set : {
+           programName: updateEvent.programName,
+           image: updateEvent.image,
+           programDecription: updateEvent.programDescription
+         },
+       };
+       const result = await storeArticleCollection.updateOne(filter,updateDoc, options)
+       res.json(result)
+     }) 
+
+  // EVENT DELETE API 
+  app.delete("/event/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await storeArticleCollection.deleteOne(query);
+      res.json(result);
+    });
+  
+  // ========================================================================
+  // =======================   Article DataStore  End =======================
+  // ========================================================================
+
+
+    // ========================================================================
     // =======================   Event DataStore  Start =====================
     // ========================================================================
 
@@ -122,7 +174,7 @@ async function run() {
          $set : {
            EventName: updateEvent.EventName,
            date: updateEvent.date,
-           image: updateArticle.image,
+           image: updateEvent.image,
            undefined: updateEvent.undefined
          },
        };
