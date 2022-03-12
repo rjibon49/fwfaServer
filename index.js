@@ -101,7 +101,7 @@ async function run() {
     // EVENT GET API 
 
     app.get('/event', async(req, res) => {
-      const cursor = storeArticleCollection.find({});
+      const cursor = storeEventCollection.find({});
       const event = await cursor.toArray();
       res.send(event);
   })
@@ -109,7 +109,7 @@ async function run() {
   // EVENT POST API 
       app.post('/event', async(req, res) => {
           const newEvent = req.body;
-          const result = await storeArticleCollection.insertOne(newEvent);
+          const result = await storeEventCollection.insertOne(newEvent);
           console.log(result);
           res.json(result);
       })
@@ -127,7 +127,7 @@ async function run() {
            programDecription: updateEvent.programDescription
          },
        };
-       const result = await storeArticleCollection.updateOne(filter,updateDoc, options)
+       const result = await storeEventCollection.updateOne(filter,updateDoc, options)
        res.json(result)
      }) 
 
@@ -135,7 +135,7 @@ async function run() {
   app.delete("/event/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await storeArticleCollection.deleteOne(query);
+      const result = await storeEventCollection.deleteOne(query);
       res.json(result);
     });
   
@@ -201,7 +201,7 @@ async function run() {
     // =======================   Program DataStore  Start =====================
     // ========================================================================
 
-    
+
     // PROGRAM GET API 
 
     app.get('/program', async(req, res) => {
