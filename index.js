@@ -38,6 +38,7 @@ async function run() {
     const storeArticleCollection = database.collection("articles");
     const storeEventCollection = database.collection("events");
     const storeCareerCollection = database.collection("career");
+    const storeUsersCollection = database.collection("users");
 
 
 
@@ -249,7 +250,22 @@ async function run() {
 
 
 
+      // User Information Data POST API
+    app.post('/users', async (req, res) => {
+      const users = req.body;
+      const result = await storeUsersCollection.insertOne(users);
+      console.log(result);
+      res.json(result);
+    });
 
+    // User Role Update
+    app.put('/users/admin', async(req, res) => {
+      const user = req.body;
+      const filter = {email: user.email};
+      const updateDoc = {$set: {role: 'admin'}};
+      const result = await storeUsersCollection.updateOne(filter,updateDoc);
+      res.json(result);
+    })
 
 
      
