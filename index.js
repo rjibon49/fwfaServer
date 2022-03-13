@@ -1,6 +1,7 @@
 const express = require ('express');
 const { MongoClient, ServerApiVersion  } = require('mongodb');
-const cors = require ('cors')
+const cors = require ('cors');
+const res = require('express/lib/response');
 const ObjectId = require("mongodb").ObjectId;
 
 require("dotenv").config();
@@ -258,6 +259,18 @@ async function run() {
       res.json(result);
     });
 
+
+    // USer Database create in Google signIn Button 
+
+    app.put('/users', async(req, res) => {
+      const user = req.body;
+      const filter = {email: user.emai};
+      const options = { upsert: true };
+      const updateDoc = {$set: user};
+      const result = await storeUsersCollection.updateOne(filter, updateDoc, options);
+      res.json(result);
+    })
+
     // User Role Update
     app.put('/users/admin', async(req, res) => {
       const user = req.body;
@@ -286,3 +299,11 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log("Server Running port", port);
 })
+
+
+
+// Date In Mongodb 
+// const query = {date: date}
+// const cursor appointmentsCollection.find(query);
+// const appointsments = await cursor.toArray();
+// res.json(appointsments);
