@@ -250,6 +250,18 @@ async function run() {
     // ========================================================================
 
 
+    // User Data Get For Admin Role
+    app.get('/users/:email', async(req, res)=> {
+      const email = req.params.email;
+      const query ={email:email};
+      const user = await storeUsersCollection.findOne(query);
+      let isAdmin = false;
+      if(user.role === 'admin') {
+        isAdmin = true;
+      }
+      res.json({admin: isAdmin})
+    })
+
 
       // User Information Data POST API
     app.post('/users', async (req, res) => {
@@ -278,18 +290,6 @@ async function run() {
       const updateDoc = {$set: {role: 'admin'}};
       const result = await storeUsersCollection.updateOne(filter,updateDoc);
       res.json(result);
-    })
-
-    // User Data Get For Admin Role
-    app.get('/users/:email', async(req, res)=> {
-      const email = req.params.email;
-      const query ={email:email};
-      const user = await storeUsersCollection.findOne(query);
-      let isAdmin = false;
-      if(user.role === 'admin') {
-        isAdmin = true;
-      }
-      res.json({admin: isAdmin})
     })
 
 
