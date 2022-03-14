@@ -274,14 +274,14 @@ async function run() {
 
     // USer Database create in Google signIn Button 
 
-    app.put('/users', async(req, res) => {
-      const user = req.body;
-      const filter = {email: user.emai};
-      const options = { upsert: true };
-      const updateDoc = {$set: user};
-      const result = await storeUsersCollection.updateOne(filter, updateDoc, options);
-      res.json(result);
-    })
+    // app.put('/users', async(req, res) => {
+    //   const user = req.body;
+    //   const filter = {email: user.emai};
+    //   const options = { upsert: true };
+    //   const updateDoc = {$set: user};
+    //   const result = await storeUsersCollection.updateOne(filter, updateDoc, options);
+    //   res.json(result);
+    // })
 
     // User Role Update
     app.put('/users/admin', async(req, res) => {
